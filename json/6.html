@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js" type="text/javascript"></script>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl@1/dist/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat@1/dist/ecStat.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/dist/extension/dataTool.min.js"></script>
+    <script type="text/javascript">
+
+        // 折线图
+        var province = [];    //类别数组（实际用来盛放X轴坐标值）    
+        var py_salary = [];
+        var java_salary = [];
+        var cpp_salary = [];
+        var py = [];
+        var java = [];
+        var cpp = [];
+        $.ajax({
+            url: "data.json",
+            data: {},
+            type: 'GET',
+            success: function (data) {
+                //请求成功时执行该函数内容，data即为服务器返回的json对象           
+                $.each(data, function (index, item) {
+                    province.push(item.work_province);    //挨个取出类别并填入类别数组
+                    py_salary.push(item.py_salary);
+                    java_salary.push(item.java_salary);
+                    cpp_salary.push(item.cpp_salary);
+                });
+                py = echarts.dataTool.prepareBoxplotData(py_salary);
+                java = echarts.dataTool.prepareBoxplotData(java_salary);
+                cpp = echarts.dataTool.prepareBoxplotData(cpp_salary);
+
+                var dom = document.getElementById("container");
+                var myChart = echarts.init(dom);
+                var app = {};
+                option = null;
+                option = {
+                    title: {
+                        text: 'Multiple Categories',
+                        left: 'center',
+                    },
+                    legend: {
+                        top: '10%',
+                        data: ['python', 'java', 'c++']
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '10%',
+                        top: '20%',
+                        right: '10%',
+                        bottom: '15%'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: province,
+                        boundaryGap: true,
+                        nameGap: 10,
+                        splitArea: {
+                            show: true
+                        },
+                        axisLabel: {
+                            //formatter: '{value}'
+                            interval:0
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: 'Value',
+                        min: 0,
+                        max: 4,
+                        splitArea: {
+                            show: false
+                        }
+                    },
+                    dataZoom: [
+                        {
+                            type: 'inside',
+                            start: 0,
+                            end: 30
+                        },
+                        {
+                            show: true,
+                            height: 20,
+                            type: 'slider',
+                            top: '90%',
+                            xAxisIndex: [0],
+                            start: 0,
+                            end: 20
+                        }
+                    ],
+                    series: [
+                        {
+                            name: 'python',
+                            type: 'boxplot',
+                            data: py.boxData,
+                            tooltip: { formatter: formatter }
+                        },
+                        {
+                            name: 'java',
+                            type: 'boxplot',
+                            data: java.boxData,
+                            tooltip: { formatter: formatter }
+                        },
+                        {
+                            name: 'c++',
+                            type: 'boxplot',
+                            data: cpp.boxData,
+                            tooltip: { formatter: formatter }
+                        }
+                    ]
+                };
+
+                function formatter(param) {
+                    return [
+                        'Experiment ' + param.name + ': ',
+                        'upper: ' + param.data[0],
+                        'Q1: ' + param.data[1],
+                        'median: ' + param.data[2],
+                        'Q3: ' + param.data[3],
+                        'lower: ' + param.data[4]
+                    ].join('<br/>');
+                };
+                if (option && typeof option === "object") {
+                    myChart.setOption(option, true);
+                }
+            },
+        });
+
+    </script>
+</body>
+
+</html>

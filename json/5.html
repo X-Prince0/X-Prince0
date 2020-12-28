@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl@1/dist/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat@1/dist/ecStat.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4/dist/extension/dataTool.min.js"></script>
+    <script type="text/javascript">
+
+        var requirement = [];
+        var python = [];
+        var java = [];
+        var cpp = [];
+        $.ajax({
+            url: "requirement.json",
+            data: {},
+            type: 'GET',
+            success: function (data) {
+                requirement.push('work_requirement');    //挨个取出类别并填入类别数组
+                python.push('python');
+                java.push('java');
+                cpp.push('c++');
+                //请求成功时执行该函数内容，data即为服务器返回的json对象           
+                $.each(data, function (index, item) {
+                    requirement.push(item.work_requirement);    //挨个取出类别并填入类别数组
+                    python.push(item.py_requirement);
+                    java.push(item.java_requirement);
+                    cpp.push(item.cpp_requirement);
+                    
+                });
+                //console.log(java)
+
+
+                var dom = document.getElementById("container");
+                var myChart = echarts.init(dom);
+                var app = {};
+                option = null;
+
+                setTimeout(function () {
+
+                    option = {
+                        legend: {},
+                        tooltip: {
+                            trigger: 'axis',
+                            showContent: false
+                        },
+                        dataset: {
+                            source: [
+                                requirement,
+                                python,
+                                java,
+                                cpp
+                            ]
+                        },
+                        xAxis: { type: 'category' },
+                        yAxis: { gridIndex: 0 },
+                        grid: { top: '55%' },
+                        series: [
+                            { type: 'line', smooth: true, seriesLayoutBy: 'row' },
+                            { type: 'line', smooth: true, seriesLayoutBy: 'row' },
+                            { type: 'line', smooth: true, seriesLayoutBy: 'row' },
+                            { type: 'line', smooth: true, seriesLayoutBy: 'row' },
+                            {
+                                type: 'pie',
+                                id: 'pie',
+                                radius: '30%',
+                                center: ['50%', '25%'],
+                                label: {
+                                    formatter: ' {@大专} ({d}%)'
+                                },
+                                encode: {
+                                    itemName: 'requirement',
+                                    value: '大专',
+                                    tooltip: '大专'
+                                }
+                            }
+                        ]
+                    };
+
+                    myChart.on('updateAxisPointer', function (event) {
+                        var xAxisInfo = event.axesInfo[0];
+                        if (xAxisInfo) {
+                            var dimension = xAxisInfo.value + 1;
+                            myChart.setOption({
+                                series: {
+                                    id: 'pie',
+                                    label: {
+                                        formatter: '{@[' + dimension + ']} ({d}%)'
+                                    },
+                                    encode: {
+                                        value: dimension,
+                                        tooltip: dimension
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                    myChart.setOption(option);
+
+                });;
+                if (option && typeof option === "object") {
+                    myChart.setOption(option, true);
+                };}})
+    </script>
+</body>
+            
+</html>
