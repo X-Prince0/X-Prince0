@@ -211,14 +211,14 @@
                 </svg>
                 
                 <span> <a href="">Xue Ruizhuo</a></span>
-                <p>2020-11-03 20:33:36</p>
+                <p>2020-12-29 20:33:36</p>
             </div>
         </div>
     </div>
 </div>
 <div class="article-content">
     <div id="article" class="content">
-        <h1 id="For-our-team"><a href="#For-our-team" class="headerlink" title="For our team"></a>For our team</h1><p>nothing</p>
+        <h1 id="For-our-team"><a href="#For-our-team" class="headerlink" title="For our team"></a>For our team</h1><p><img src="/Team%20Information/H.jpg" alt="HEDONGJIE"><br>Dongjie He is good at python programming, data analysis and modeling. He complete the work of <strong>data acquisition, importing data to database, drawing wordcloud.</strong><br><img src="/Team%20Information/X.jpg" alt="XUERUIZHUO"><br>Ruizhuo Xue is good at front-end, tableau and echarts. She completed the <strong>deployment of the web framework</strong> and drew several diagrams with <strong>tableau and echarts</strong>.</p>
 
     </div>
 </div>
@@ -247,13 +247,6 @@
     $(function () { $('#article').click(function (e) { if (e.target.tagName == "IMG") { if ($('#nonediv').length == 0) { let MImg = `<div id='noneimg'><img src='${e.target.currentSrc}'></div>`; let MDiv = "<div id='nonediv' style='cursor: pointer;display: none; position: fixed;left: 0;top: 0; right: 0;bottom: 0;background-color: #333;opacity:0.5;z-index: 108;'></div>"; $('#article').append(MDiv); $('#article').append(MImg); $("#nonediv").fadeIn("slow"); $("#noneimg img").fadeIn("slow") } } else { if ($('#nonediv').length !== 0) { $("#noneimg ").fadeOut("slow"); $("#nonediv").fadeOut("slow"); setTimeout(function () { $('#nonediv').remove(); $('#noneimg').remove() }, 500) } } }); $('.article-content').addClass('content-move') });
 </script>
 <div class="Last-Next">
-    
-    <a href="/Graphic%20and%20Salary/">
-        <div class="last">
-            <span>上一篇</span>
-            <p>Graphic and Salary</p>
-        </div>
-    </a>
     
 
     

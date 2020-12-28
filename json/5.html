@@ -49,7 +49,8 @@
                         legend: {},
                         tooltip: {
                             trigger: 'axis',
-                            showContent: false
+                            showContent: false,
+                            confine:true
                         },
                         dataset: {
                             source: [
@@ -62,13 +63,21 @@
                         xAxis: { 
                             type: 'category',
                             boundaryGap: true,
-                            nameGap: 10,
+                            nameGap: 100,
                             axisLabel:{
-                                interval:0
+                                formatter:function(value, index){
+                                    if (index % 2 != 0){
+                                        return "\n" + value;
+                                    } else{
+                                        return value;
+                                    }
+                                },
+                                interval:0,
+                                //rotate:40
                             }
                         },
                         yAxis: { gridIndex: 0 },
-                        grid: { top: '55%' },
+                        grid: { top: '45%' },
                         series: [
                             { type: 'line', smooth: true, seriesLayoutBy: 'row' },
                             { type: 'line', smooth: true, seriesLayoutBy: 'row' },
@@ -77,7 +86,7 @@
                             {
                                 type: 'pie',
                                 id: 'pie',
-                                radius: '30%',
+                                radius: '25%',
                                 center: ['50%', '25%'],
                                 label: {
                                     formatter: ' {@上市公司} ({d}%)'
