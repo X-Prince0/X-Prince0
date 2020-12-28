@@ -19,17 +19,17 @@
         var java = [];
         var cpp = [];
         $.ajax({
-            url: "requirement.json",
+            url: "company_job.json",
             data: {},
             type: 'GET',
             success: function (data) {
-                requirement.push('work_requirement');    //挨个取出类别并填入类别数组
+                requirement.push('company_type');    //挨个取出类别并填入类别数组
                 python.push('python');
                 java.push('java');
                 cpp.push('c++');
                 //请求成功时执行该函数内容，data即为服务器返回的json对象           
                 $.each(data, function (index, item) {
-                    requirement.push(item.work_requirement);    //挨个取出类别并填入类别数组
+                    requirement.push(item.company_type);    //挨个取出类别并填入类别数组
                     python.push(item.py_requirement);
                     java.push(item.java_requirement);
                     cpp.push(item.cpp_requirement);
@@ -59,7 +59,14 @@
                                 cpp
                             ]
                         },
-                        xAxis: { type: 'category' },
+                        xAxis: { 
+                            type: 'category',
+                            boundaryGap: true,
+                            nameGap: 10,
+                            axisLabel:{
+                                interval:0
+                            }
+                        },
                         yAxis: { gridIndex: 0 },
                         grid: { top: '55%' },
                         series: [
@@ -73,12 +80,12 @@
                                 radius: '30%',
                                 center: ['50%', '25%'],
                                 label: {
-                                    formatter: ' {@大专} ({d}%)'
+                                    formatter: ' {@上市公司} ({d}%)'
                                 },
                                 encode: {
-                                    itemName: 'requirement',
-                                    value: '大专',
-                                    tooltip: '大专'
+                                    itemName: 'company_type',
+                                    value: '上市公司',
+                                    tooltip: '上市公司'
                                 }
                             }
                         ]
