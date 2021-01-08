@@ -66,7 +66,7 @@
                         dimension: 1,
                         precision: 0,
                         text: ['High', 'Low'],
-                        inverse: true,
+                        inverse: false,
                         itemHeight: 200,
                         calculable: true,
                         min: 0,
@@ -88,10 +88,19 @@
                     xAxis: {
                         data: company_type,
                         axisLabel: {
-                            inside: true,
+                            //inside: true,
                             textStyle: {
                                 color: '#000000'
-                            }
+                            },
+                            formatter: function (value, index) {
+                                    if (index % 2 != 0) {
+                                        return "\n" + value;
+                                    } else {
+                                        return value;
+                                    }
+                                },
+                                interval: 0,
+                                rotate:30
                         },
                         axisTick: {
                             show: false
