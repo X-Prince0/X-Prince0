@@ -18,28 +18,33 @@
 
         // 折线图
         var province = [];    //类别数组（实际用来盛放X轴坐标值）    
-        var py_salary = [];
-        var java_salary = [];
-        var cpp_salary = [];
-        var py = [];
-        var java = [];
-        var cpp = [];
+        var 无学历_salary = [];
+        var 大专_salary = [];
+        var 本科_salary = [];
+        var 硕士_salary = [];
+        var 无学历 = [];
+        var 大专 = [];
+        var 本科 = [];
+        var 硕士 = [];
         $.ajax({
-            url: "data.json",
+            url: "province_requirement_job.json",
             data: {},
             type: 'GET',
             success: function (data) {
                 //请求成功时执行该函数内容，data即为服务器返回的json对象           
                 $.each(data, function (index, item) {
-                    province.push(item.work_province);    //挨个取出类别并填入类别数组
-                    py_salary.push(item.py_salary);
-                    java_salary.push(item.java_salary);
-                    cpp_salary.push(item.cpp_salary);
+                    province.push(item.province);    //挨个取出类别并填入类别数组
+                    无学历_salary.push(item.无学历要求);
+                    大专_salary.push(item.大专);
+                    本科_salary.push(item.本科);
+                    硕士_salary.push(item.硕士);
                 });
-                py = echarts.dataTool.prepareBoxplotData(py_salary);
-                java = echarts.dataTool.prepareBoxplotData(java_salary);
-                cpp = echarts.dataTool.prepareBoxplotData(cpp_salary);
+                无学历 = echarts.dataTool.prepareBoxplotData(无学历_salary);
+                大专 = echarts.dataTool.prepareBoxplotData(大专_salary);
+                本科 = echarts.dataTool.prepareBoxplotData(本科_salary);
+                硕士 = echarts.dataTool.prepareBoxplotData(硕士_salary);
 
+                //console.log(无学历);
                 var dom = document.getElementById("container");
                 var myChart = echarts.init(dom);
                 var app = {};
@@ -51,7 +56,7 @@
                     },
                     legend: {
                         top: '10%',
-                        data: ['python', 'java', 'c++']
+                        data: ['无学历要求', '大专', '本科', '硕士']
                     },
                     tooltip: {
                         trigger: 'item',
@@ -85,7 +90,7 @@
                         type: 'value',
                         name: 'Value',
                         min: 0,
-                        max: 4,
+                        max: 5,
                         splitArea: {
                             show: false
                         }
@@ -108,21 +113,27 @@
                     ],
                     series: [
                         {
-                            name: 'python',
+                            name: '无学历要求',
                             type: 'boxplot',
-                            data: py.boxData,
+                            data: 无学历.boxData,
                             tooltip: { formatter: formatter }
                         },
                         {
-                            name: 'java',
+                            name: '大专',
                             type: 'boxplot',
-                            data: java.boxData,
+                            data: 大专.boxData,
                             tooltip: { formatter: formatter }
                         },
                         {
-                            name: 'c++',
+                            name: '本科',
                             type: 'boxplot',
-                            data: cpp.boxData,
+                            data: 本科.boxData,
+                            tooltip: { formatter: formatter }
+                        },
+                        {
+                            name: '硕士',
+                            type: 'boxplot',
+                            data: 硕士.boxData,
                             tooltip: { formatter: formatter }
                         }
                     ]
@@ -130,7 +141,7 @@
 
                 function formatter(param) {
                     return [
-                        'Experiment ' + param.name + ': ',
+                        'province ' + param.name + ': ',
                         'upper: ' + param.data[0],
                         'Q1: ' + param.data[1],
                         'median: ' + param.data[2],
