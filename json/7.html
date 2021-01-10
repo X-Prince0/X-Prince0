@@ -64,24 +64,24 @@
                     visualMap: {
                         type: 'continuous',
                         dimension: 1,
-                        precision: 0,
+                        precision: 1,
                         text: ['High', 'Low'],
                         inverse: false,
                         itemHeight: 200,
                         calculable: true,
-                        min: 0,
-                        max: 2,
+                        min: 0.6,
+                        max: 1.9,
                         top: 60,
                         left: 10,
                         inRange: {
                             colorLightness: [0.4, 0.8]
                         },
                         outOfRange: {
-                            color: '#bbb'
+                            color: '#188df0'
                         },
                         controller: {
                             inRange: {
-                                color: '#2f4554'
+                                color: '#188df0'
                             }
                         }
                     },
